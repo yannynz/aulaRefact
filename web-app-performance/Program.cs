@@ -1,19 +1,29 @@
+using MyApp.Repositories; 
 using web_app_repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//Configurar injeção de dependência
-//Vocês vão esquecer de fazer isso e dará erro! 
+// Configurar injeção de dependência
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IProdutoRepository>();
+
+// política de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000") 
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
-builder.Services.AddScoped<IProdutoRepository>(sp => new ProdutoRepository(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -24,8 +34,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Usando a política CORS
+app.UseCors("AllowSpecificOrigins");
+
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+

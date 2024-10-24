@@ -25,7 +25,7 @@ namespace web_app_performance.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProdutos()
         {
-            string key = "getprodutos";
+            /*string key = "getprodutos";
             redis = ConnectionMultiplexer.Connect("localhost:6379");
             IDatabase db = redis.GetDatabase();
             await db.KeyExpireAsync(key, TimeSpan.FromSeconds(10));
@@ -34,11 +34,15 @@ namespace web_app_performance.Controllers
             if (!string.IsNullOrEmpty(produtosCache))
             {
                 return Ok(produtosCache);
-            }
+                }*/
 
             var produtos = await _repository.ListarProdutosAsync();
+            if (produtos == null)
+            {
+                return NotFound();
+            }
             string produtosJson = JsonConvert.SerializeObject(produtos);
-            await db.StringSetAsync(key, produtosJson);
+            /*await db.StringSetAsync(key, produtosJson);*/
             return Ok(produtos);
         }
 
