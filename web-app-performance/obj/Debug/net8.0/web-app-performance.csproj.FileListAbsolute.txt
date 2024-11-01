@@ -116,3 +116,4 @@ D:/pasta/web-app-performance/web-app-performance/bin/Debug/net8.0/web-app-reposi
 /home/yann/Documentos/web-app-performance/web-app-performance/obj/Debug/net8.0/web-app-performance.pdb
 /home/yann/Documentos/web-app-performance/web-app-performance/obj/Debug/net8.0/web-app-performance.genruntimeconfig.cache
 /home/yann/Documentos/web-app-performance/web-app-performance/obj/Debug/net8.0/ref/web-app-performance.dll
+/home/yann/Documentos/web-app-performance/web-app-performance/bin/Debug/net8.0/RabbitMQ.Client.dll

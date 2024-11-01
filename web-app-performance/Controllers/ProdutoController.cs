@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
+using MyApp.Services;
 using MyApp.Models;
 using MyApp.Repositories;
 using Newtonsoft.Json;
+using RabbitMQ.Client;
 using StackExchange.Redis;
 using System;
 using System.Threading.Tasks;
-using web_app_domain;
-using web_app_repository;
 
 namespace web_app_performance.Controllers
 {
@@ -14,35 +15,43 @@ namespace web_app_performance.Controllers
     [ApiController]
     public class ProdutoController : ControllerBase
     {
-        private static ConnectionMultiplexer redis;
         private readonly IProdutoRepository _repository;
+        private readonly RabbitMQService _rabbitMQService;
+        private readonly IConnectionMultiplexer _redis;
 
-        public ProdutoController(IProdutoRepository repository)
+
+        public ProdutoController(IProdutoRepository repository, RabbitMQService rabbitMQService, IConnectionMultiplexer redis)
         {
             _repository = repository;
+            _rabbitMQService = rabbitMQService;
+            _redis = redis;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetProdutos()
         {
-            /*string key = "getprodutos";
-            redis = ConnectionMultiplexer.Connect("localhost:6379");
-            IDatabase db = redis.GetDatabase();
-            await db.KeyExpireAsync(key, TimeSpan.FromSeconds(10));
-            string produtosCache = await db.StringGetAsync(key);
+            string key = "getprodutos";
+            var db = _redis.GetDatabase();
 
+            // Verifique se existe no cache
+            string produtosCache = await db.StringGetAsync(key);
             if (!string.IsNullOrEmpty(produtosCache))
             {
                 return Ok(produtosCache);
-                }*/
+            }
 
+            // Se não houver cache, busca no banco
             var produtos = await _repository.ListarProdutosAsync();
             if (produtos == null)
             {
                 return NotFound();
             }
+
             string produtosJson = JsonConvert.SerializeObject(produtos);
-            /*await db.StringSetAsync(key, produtosJson);*/
+
+            // Salve no cache e defina um tempo de expiração
+            await db.StringSetAsync(key, produtosJson, TimeSpan.FromSeconds(10));
+
             return Ok(produtos);
         }
 
@@ -51,11 +60,8 @@ namespace web_app_performance.Controllers
         {
             await _repository.SalvarProdutoAsync(produto);
 
-            // Limpar o cache
-            string key = "getprodutos";
-            redis = ConnectionMultiplexer.Connect("localhost:6379");
-            IDatabase db = redis.GetDatabase();
-            await db.KeyDeleteAsync(key);
+            // Publica a mensagem no RabbitMQ
+            _rabbitMQService.Publish(produto, "produtos");
 
             return Ok();
         }
@@ -67,8 +73,7 @@ namespace web_app_performance.Controllers
 
             // Limpar o cache
             string key = "getprodutos";
-            redis = ConnectionMultiplexer.Connect("localhost:6379");
-            IDatabase db = redis.GetDatabase();
+            var db = _redis.GetDatabase();
             await db.KeyDeleteAsync(key);
 
             return Ok();
@@ -81,8 +86,7 @@ namespace web_app_performance.Controllers
 
             // Limpar o cache
             string key = "getprodutos";
-            redis = ConnectionMultiplexer.Connect("localhost:6379");
-            IDatabase db = redis.GetDatabase();
+            var db = _redis.GetDatabase();
             await db.KeyDeleteAsync(key);
 
             return Ok();

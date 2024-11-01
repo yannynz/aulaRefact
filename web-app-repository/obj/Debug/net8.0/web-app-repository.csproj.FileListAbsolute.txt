@@ -1,0 +1,16 @@
+/home/yann/Documentos/web-app-performance/web-app-repository/bin/Debug/net8.0/web-app-repository.deps.json
+/home/yann/Documentos/web-app-performance/web-app-repository/bin/Debug/net8.0/web-app-repository.dll
+/home/yann/Documentos/web-app-performance/web-app-repository/bin/Debug/net8.0/web-app-repository.pdb
+/home/yann/Documentos/web-app-performance/web-app-repository/bin/Debug/net8.0/web-app-domain.dll
+/home/yann/Documentos/web-app-performance/web-app-repository/bin/Debug/net8.0/web-app-domain.pdb
+/home/yann/Documentos/web-app-performance/web-app-repository/obj/Debug/net8.0/web-app-repository.csproj.AssemblyReference.cache
+/home/yann/Documentos/web-app-performance/web-app-repository/obj/Debug/net8.0/web-app-repository.GeneratedMSBuildEditorConfig.editorconfig
+/home/yann/Documentos/web-app-performance/web-app-repository/obj/Debug/net8.0/web-app-repository.AssemblyInfoInputs.cache
+/home/yann/Documentos/web-app-performance/web-app-repository/obj/Debug/net8.0/web-app-repository.AssemblyInfo.cs
+/home/yann/Documentos/web-app-performance/web-app-repository/obj/Debug/net8.0/web-app-repository.csproj.CoreCompileInputs.cache
+/home/yann/Documentos/web-app-performance/web-app-repository/obj/Debug/net8.0/web-app-repository.sourcelink.json
+/home/yann/Documentos/web-app-performance/web-app-repository/obj/Debug/net8.0/web-app-.F8B340CA.Up2Date
+/home/yann/Documentos/web-app-performance/web-app-repository/obj/Debug/net8.0/web-app-repository.dll
+/home/yann/Documentos/web-app-performance/web-app-repository/obj/Debug/net8.0/refint/web-app-repository.dll
+/home/yann/Documentos/web-app-performance/web-app-repository/obj/Debug/net8.0/web-app-repository.pdb
+/home/yann/Documentos/web-app-performance/web-app-repository/obj/Debug/net8.0/ref/web-app-repository.dll
